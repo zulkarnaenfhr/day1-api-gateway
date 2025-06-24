@@ -15,19 +15,15 @@ public class LoggingFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
-        // Log the incoming request
         logger.info("Incoming request: {} {}", exchange.getRequest().getMethod(), exchange.getRequest().getURI());
 
-        // Proceed with the filter chain
         return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-            // Log the outgoing response
             logger.info("Outgoing response: {}", exchange.getResponse().getStatusCode());
         }));
     }
 
     @Override
     public int getOrder() {
-        // Set the order of this filter (lower values have higher precedence)
         return 0;
     }
 }
